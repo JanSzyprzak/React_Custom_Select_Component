@@ -1,9 +1,9 @@
 import styles from "./select.module.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type SelectOption = {
     label: string
-    value: any
+    value: string | number
 }
 
 type SelectProps = {
@@ -21,12 +21,16 @@ export function Select({ value, onChange, options }: SelectProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [highlightedIndex, setHighlightedIndex] = useState(0)
 
+    useEffect(() => {
+        if (isOpen) setHighlightedIndex(0)
+    }, [isOpen])
+
     function clearOptions() {
         onChange(undefined)
     }
 
     function selectOption(option: SelectOption) {
-        onChange(option)
+        if (option !== value) onChange(option)
     }
 
     function isOptionSelected(option: SelectOption) {
